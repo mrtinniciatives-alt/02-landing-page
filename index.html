@@ -115,15 +115,20 @@
         <div class="container">
           <div class="section-heading pricing-heading">
             <div><p class="eyebrow">02 / Straightforward ways to work</p><h2>Good work, <span class="serif-accent">clear terms.</span></h2></div>
-            <div class="billing-toggle" role="group" aria-label="Billing period">
-              <button type="button" class="billing-toggle__option is-active" data-period="monthly" aria-pressed="true">Monthly</button>
-              <button type="button" class="billing-toggle__option" data-period="yearly" aria-pressed="false">Yearly <span>−10%</span></button>
+            <div class="billing-toggle">
+              <span class="billing-toggle__label">Monthly</span>
+              <label class="billing-toggle__switch">
+                <input id="billing-yearly" type="checkbox" role="switch" aria-label="Use yearly billing">
+                <span class="billing-toggle__track" aria-hidden="true"></span>
+              </label>
+              <span class="billing-toggle__label">Yearly</span>
+              <span class="billing-toggle__savings" id="billing-savings" hidden>Save 20%</span>
             </div>
           </div>
           <div class="plan-grid">
             <article class="plan-card card">
               <p class="plan-card__name">Basic</p><p class="plan-card__description">A focused start for one clear goal.</p>
-              <p class="plan-card__price"><span class="plan-card__amount" data-monthly="900" data-yearly="810">£900</span><span class="plan-card__period"> / month</span></p>
+              <p class="plan-card__price"><span class="plan-card__amount" data-monthly="900" data-yearly="720">£900</span><span class="plan-card__period"> / month</span></p>
               <a class="btn btn--ghost" href="#get-started">Choose Basic <span aria-hidden="true">↗</span></a>
               <p class="plan-card__includes">A good fit for a first step</p>
               <ul><li>One active project</li><li>Landing page or feature design</li><li>Weekly progress update</li><li>Direct email support</li></ul>
@@ -131,14 +136,14 @@
             <article class="plan-card plan-card--featured card card--featured">
               <div class="plan-card__badge badge badge--popular">Most popular <span>✳</span></div>
               <p class="plan-card__name">Pro</p><p class="plan-card__description">For teams ready to move with intention.</p>
-              <p class="plan-card__price"><span class="plan-card__amount" data-monthly="1800" data-yearly="1620">£1,800</span><span class="plan-card__period"> / month</span></p>
+              <p class="plan-card__price"><span class="plan-card__amount" data-monthly="1800" data-yearly="1440">£1,800</span><span class="plan-card__period"> / month</span></p>
               <a class="btn btn--primary btn--light" href="#get-started">Choose Pro <span aria-hidden="true">↗</span></a>
               <p class="plan-card__includes">Everything in Basic, plus</p>
               <ul><li>Priority project queue</li><li>Design and development</li><li>Twice-weekly check-ins</li><li>Ongoing refinements</li></ul>
             </article>
             <article class="plan-card card">
               <p class="plan-card__name">Business</p><p class="plan-card__description">A close creative partner for bigger plans.</p>
-              <p class="plan-card__price"><span class="plan-card__amount" data-monthly="3200" data-yearly="2880">£3,200</span><span class="plan-card__period"> / month</span></p>
+              <p class="plan-card__price"><span class="plan-card__amount" data-monthly="3200" data-yearly="2560">£3,200</span><span class="plan-card__period"> / month</span></p>
               <a class="btn btn--ghost" href="#get-started">Choose Business <span aria-hidden="true">↗</span></a>
               <p class="plan-card__includes">A more embedded partnership</p>
               <ul><li>Multiple workstreams</li><li>Product and design systems</li><li>Weekly working session</li><li>Fast-turnaround support</li></ul>
