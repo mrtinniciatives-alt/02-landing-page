@@ -215,14 +215,16 @@
             <p>Tell me what you’re thinking. No big pitch, no pressure — just a useful first conversation about what could be possible.</p>
             <div class="availability"><span class="status-pip"></span> Taking on new projects for autumn 2026</div>
           </div>
-          <form class="signup-form" id="signup-form">
+          <form class="signup-form" id="signup-form" novalidate>
             <div class="form-heading"><span>START A CONVERSATION</span><span>01 — 04</span></div>
             <label for="full-name">Your name</label>
-            <input id="full-name" name="name" type="text" placeholder="How should I address you?" autocomplete="name" required>
+            <input id="full-name" name="name" type="text" placeholder="How should I address you?" autocomplete="name" aria-describedby="name-error" required>
+            <p class="field-error" id="name-error" hidden></p>
             <label for="email">Email address</label>
-            <input id="email" name="email" type="email" placeholder="you@company.com" autocomplete="email" required>
+            <input id="email" name="email" type="email" placeholder="you@company.com" autocomplete="email" aria-describedby="email-error" required>
+            <p class="field-error" id="email-error" hidden></p>
             <label for="plan">What are you looking for?</label>
-            <select id="plan" name="plan" required>
+            <select id="plan" name="plan" aria-describedby="plan-error" required>
               <option value="" disabled selected>Choose a starting point</option>
               <option value="basic">Basic — focused support</option>
               <option value="pro">Pro — design + development</option>
@@ -230,7 +232,9 @@
               <option value="project">One-off project</option>
               <option value="unsure">Let’s figure it out together</option>
             </select>
-            <label class="terms-label" for="terms"><input id="terms" name="terms" type="checkbox" required><span>I agree to be contacted about my enquiry and accept the <a href="#privacy">privacy policy</a>.</span></label>
+            <p class="field-error" id="plan-error" hidden></p>
+            <label class="terms-label" for="terms"><input id="terms" name="terms" type="checkbox" aria-describedby="terms-error" required><span>I agree to be contacted about my enquiry and accept the <a href="#privacy">privacy policy</a>.</span></label>
+            <p class="field-error field-error--terms" id="terms-error" hidden></p>
             <button class="btn btn--primary form-submit" type="submit">Send your enquiry <span aria-hidden="true">↗</span></button>
             <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
             <p class="form-note">Your details stay with me. Expect a personal reply within two working days.</p>

@@ -225,6 +225,11 @@ h2 { margin-bottom: 0; font-size: clamp(40px, 5vw, 57px); font-weight: 600; line
 .signup-form input::placeholder { color: #77757f; }
 .signup-form select { color: #c0bec6; }
 .signup-form input:focus, .signup-form select:focus { border-color: var(--lime); box-shadow: 0 0 0 2px rgb(215 240 106 / 12%); }
+.signup-form [aria-invalid="true"] { border-color: #ff8c8c; }
+.signup-form [aria-invalid="true"]:focus { border-color: #ff8c8c; box-shadow: 0 0 0 2px rgb(255 140 140 / 16%); }
+.field-error { margin: -10px 0 15px; color: #ffaaaa; font-size: 10px; line-height: 1.5; }
+.field-error[hidden] { display: none; }
+.field-error--terms { margin: -12px 0 17px 23px; }
 .terms-label { display: flex; align-items: flex-start; gap: 9px; margin: 1px 0 19px; color: #aaa8b1; font-size: 9px; line-height: 1.6; }
 .terms-label input { width: 14px; height: 14px; flex: 0 0 auto; margin: 1px 0 0; accent-color: var(--brand); }
 .terms-label a { color: var(--lime); text-decoration: underline; text-underline-offset: 2px; }

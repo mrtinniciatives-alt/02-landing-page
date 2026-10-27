@@ -146,7 +146,7 @@ const initHeaderShadow = () => {
 };
 
 /**
- * Initializes the demo enquiry form while preserving native validation.
+ * Initializes validation, duplicate detection, and localStorage persistence.
  */
 const initSignupForm = () => {
   const signupForm = document.querySelector("#signup-form");
@@ -154,19 +154,112 @@ const initSignupForm = () => {
 
   if (!signupForm || !formStatus) return;
 
+  const fields = {
+    name: signupForm.elements.namedItem("name"),
+    email: signupForm.elements.namedItem("email"),
+    plan: signupForm.elements.namedItem("plan"),
+    terms: signupForm.elements.namedItem("terms")
+  };
+  const errors = {
+    name: document.querySelector("#name-error"),
+    email: document.querySelector("#email-error"),
+    plan: document.querySelector("#plan-error"),
+    terms: document.querySelector("#terms-error")
+  };
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const validationMessages = {
+    name: "Enter your name using at least 2 characters.",
+    email: "Enter a valid email address.",
+    plan: "Choose a plan to continue.",
+    terms: "Please agree to the terms before continuing."
+  };
+
+  const getFieldError = (fieldName) => {
+    const field = fields[fieldName];
+    if (fieldName === "name" && field.value.trim().length < 2) return validationMessages.name;
+    if (fieldName === "email" && !emailPattern.test(field.value.trim())) return validationMessages.email;
+    if (fieldName === "plan" && !field.value) return validationMessages.plan;
+    if (fieldName === "terms" && !field.checked) return validationMessages.terms;
+    return "";
+  };
+
+  const updateFieldError = (fieldName) => {
+    const field = fields[fieldName];
+    const error = errors[fieldName];
+    const message = getFieldError(fieldName);
+    if (!field || !error) return !message;
+
+    field.setAttribute("aria-invalid", String(Boolean(message)));
+    error.textContent = message;
+    error.hidden = !message;
+    return !message;
+  };
+
+  const clearStatusWhenEdited = () => {
+    formStatus.textContent = "";
+  };
+
+  Object.keys(fields).forEach((fieldName) => {
+    const field = fields[fieldName];
+    const eventName = fieldName === "terms" || fieldName === "plan" ? "change" : "input";
+
+    field.addEventListener(eventName, () => {
+      if (field.hasAttribute("aria-invalid")) updateFieldError(fieldName);
+      clearStatusWhenEdited();
+    });
+  });
+
   signupForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    if (!signupForm.reportValidity()) return;
+    formStatus.textContent = "";
 
-    const name = new FormData(signupForm).get("name")?.toString().trim();
-    if (!name) {
-      formStatus.textContent = "Please enter your name so I know who to reply to.";
-      signupForm.elements.namedItem("name")?.focus();
+    const fieldNames = Object.keys(fields);
+    const isValid = fieldNames
+      .map((fieldName) => updateFieldError(fieldName))
+      .every(Boolean);
+
+    if (!isValid) {
+      const firstInvalidField = fieldNames.find((fieldName) => getFieldError(fieldName));
+      if (firstInvalidField) fields[firstInvalidField].focus();
       return;
     }
 
-    formStatus.textContent = `Thanks, ${name.split(/\s+/)[0]} — this demo form isn't connected to an inbox yet. Please email hello@mrtinniciatives.com and I'll get back to you within two working days.`;
+    const name = fields.name.value.trim();
+    const email = fields.email.value.trim();
+    const plan = fields.plan.value;
+
+    try {
+      const savedSignups = localStorage.getItem("signups");
+      const signups = savedSignups ? JSON.parse(savedSignups) : [];
+      if (!Array.isArray(signups)) throw new Error("Stored signups are not an array.");
+
+      const alreadySignedUp = signups.some((signup) =>
+        signup && typeof signup.email === "string" && signup.email.toLowerCase() === email.toLowerCase()
+      );
+      if (alreadySignedUp) {
+        formStatus.textContent = "You've already signed up";
+        fields.email.setAttribute("aria-invalid", "true");
+        errors.email.textContent = "You've already signed up with this email address.";
+        errors.email.hidden = false;
+        fields.email.focus();
+        return;
+      }
+
+      signups.push({ name, email, plan, createdAt: new Date().toISOString() });
+      localStorage.setItem("signups", JSON.stringify(signups));
+    } catch (error) {
+      console.error("Unable to save signup to localStorage.", error);
+      formStatus.textContent = "We couldn't save your enquiry in this browser. Please try again or email hello@mrtinniciatives.com.";
+      return;
+    }
+
     signupForm.reset();
+    fieldNames.forEach((fieldName) => {
+      fields[fieldName].removeAttribute("aria-invalid");
+      errors[fieldName].textContent = "";
+      errors[fieldName].hidden = true;
+    });
+    formStatus.textContent = "Thanks for signing up. Your enquiry has been saved in this browser.";
   });
 };
 
