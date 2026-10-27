@@ -155,10 +155,10 @@ const initSignupForm = () => {
   if (!signupForm || !formStatus) return;
 
   const fields = {
-    name: signupForm.elements.namedItem("name"),
-    email: signupForm.elements.namedItem("email"),
-    plan: signupForm.elements.namedItem("plan"),
-    terms: signupForm.elements.namedItem("terms")
+    name: signupForm.querySelector('[name="name"]'),
+    email: signupForm.querySelector('[name="email"]'),
+    plan: signupForm.querySelector('[name="plan"]'),
+    terms: signupForm.querySelector('[name="terms"]')
   };
   const errors = {
     name: document.querySelector("#name-error"),
@@ -166,6 +166,9 @@ const initSignupForm = () => {
     plan: document.querySelector("#plan-error"),
     terms: document.querySelector("#terms-error")
   };
+
+  const missingFields = Object.values(fields).some((field) => !field);
+  if (missingFields) return;
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const validationMessages = {
     name: "Enter your name using at least 2 characters.",
